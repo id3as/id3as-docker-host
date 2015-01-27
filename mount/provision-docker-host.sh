@@ -5,6 +5,11 @@ if [[ $UID -ne 0 ]]; then
   exit 1
 fi
 
+function enable_ssh {
+  rm -f /etc/service/sshd/down
+  /etc/my_init.d/00_regen_ssh_host_keys.sh
+}
+
 function package_exists {
    return $(dpkg-query -W -f='${Status}' $1 2>/dev/null | grep -c "ok installed")
 };
@@ -40,6 +45,7 @@ function install_packages {
 
 update_sources
 install_packages
+enable_ssh
 
 ## Install the magic wrapper.
 #ADD ./wrapdocker /usr/local/bin/wrapdocker
