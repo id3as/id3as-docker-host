@@ -35,16 +35,22 @@ install_packages() {
   apt_install lxc
   apt_install iptables
   apt_install lxc-docker
+  apt_install sudo # yes, really
 }
 
 install_daemon() {
   cp -r /host/wrapdocker /etc/service/wrapdocker
 }
 
+enable_sshd() {
+  rm -f /etc/service/sshd/down
+}
+
 
 update_sources
 install_packages
 install_daemon
+enable_sshd
 
 ## Install the magic wrapper.
 #ADD ./wrapdocker /usr/local/bin/wrapdocker
